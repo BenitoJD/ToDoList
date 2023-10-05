@@ -13,6 +13,12 @@ const ToDoListScreen = ({ navigation }) => {
     }
   };
 
+  const deleteTask = (index) => {
+    const updatedTasks = [...tasks];
+    updatedTasks.splice(index, 1);
+    setTasks(updatedTasks);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>To-Do List</Text>
@@ -20,9 +26,10 @@ const ToDoListScreen = ({ navigation }) => {
       <FlatList
         data={tasks}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Text>{item}</Text>
+        renderItem={({ item, index }) => (
+          <View style={styles.taskContainer}>
+            <Text style={styles.taskText}>{item}</Text>
+            <Button title="Delete" onPress={() => deleteTask(index)} />
           </View>
         )}
       />
@@ -34,7 +41,6 @@ const ToDoListScreen = ({ navigation }) => {
         style={styles.input}
       />
       <Button title="Add" onPress={addTask} />
-
     </View>
   );
 };
@@ -49,12 +55,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 16,
   },
-  card: {
+  taskContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     backgroundColor: '#fff',
     borderRadius: 8,
     padding: 12,
     marginBottom: 8,
     elevation: 4,
+  },
+  taskText: {
+    flex: 1,
   },
   input: {
     borderWidth: 1,
